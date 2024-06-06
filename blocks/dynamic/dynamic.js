@@ -2,11 +2,11 @@
 /* eslint-disable import/extensions */
 /* eslint-disable no-alert */
 
-import { createOptimizedPicture } from '../../scripts/aem.js';
+import { createOptimizedPicture } from '../../scripts/aem.js';s
 import {
   a, div, li, p, h3, span, ul
-} from '../../../scripts/block-party/dom-helpers.js';
-import ffetch from '../../../scripts/block-party/ffetch.js';
+} from '../../../plusplus/block-party/dom-helpers.js';
+import ffetch from '../../../plusplus/block-party/ffetch.js';
 
 export default async function decorate(block) {
 // Select the element by its class
