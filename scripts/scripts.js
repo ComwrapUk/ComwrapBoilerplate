@@ -10,15 +10,16 @@ import {
   decorateTemplateAndTheme,
   waitForLCP,
   loadBlocks,
-  loadCSS,
   toClassName,
   getMetadata,
   loadScript,
   toCamelCase,
-} from './aem.js';
+  loadCSS
+} from '/scripts/aem.js';
 
-const LCP_BLOCKS = []; // add your LCP blocks to the list
+import { } from '/plusplus/src/siteConfig.js';
 
+const LCP_BLOCKS = []; // add your LCP blocks to the lis
 const AUDIENCES = {
   mobile: () => window.innerWidth < 600,
   desktop: () => window.innerWidth >= 600,
@@ -26,10 +27,10 @@ const AUDIENCES = {
 };
 
 /**
- * Gets all the metadata elements that are in the given scope.
- * @param {String} scope The scope/prefix for the metadata
- * @returns an array of HTMLElement nodes that match the given scope
- */
+     * Gets all the metadata elements that are in the given scope.
+     * @param {String} scope The scope/prefix for the metadata
+     * @returns an array of HTMLElement nodes that match the given scope
+     */
 export function getAllMetadata(scope) {
   return [...document.head.querySelectorAll(`meta[property^="${scope}:"],meta[name^="${scope}-"]`)]
     .reduce((res, meta) => {
@@ -51,7 +52,6 @@ const pluginContext = {
   toCamelCase,
   toClassName,
 };
-
 
 /**
  * Builds hero block and prepends to main in a new section.
@@ -78,6 +78,19 @@ async function loadFonts() {
   } catch (e) {
     // do nothing
   }
+}
+// added for modal handling, see adobe docs
+// eslint-disable-next-line no-unused-vars
+function autolinkModals(element) {
+  element.addEventListener('click', async(e) => {
+    const origin = e.target.closest('a');
+
+    if (origin && origin.href && origin.href.includes('/modals/')) {
+      e.preventDefault();
+      const { openModal } = await import(`${window.hlx.codeBasePath}/blocks/modal/modal.js`);
+      openModal(origin.href);
+    }
+  });
 }
 
 /**
@@ -112,17 +125,16 @@ export function decorateMain(main) {
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
-
+  document.documentElement.lang = 'en';
   // Add below snippet early in the eager phase
-  if (getMetadata('experiment')
-    || Object.keys(getAllMetadata('campaign')).length
-    || Object.keys(getAllMetadata('audience')).length) {
+  if (getMetadata('experiment') ||
+    Object.keys(getAllMetadata('campaign')).length ||
+    Object.keys(getAllMetadata('audience')).length) {
     // eslint-disable-next-line import/no-relative-packages
-    const { loadEager: runEager } = await import('../plugins/experimentation/src/index.js');
+    const { loadEager: runEager } = await import('../plusplus/plugins/experimentation/src/index.js');
     await runEager(document, { audiences: AUDIENCES }, pluginContext);
   }
 
-  document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
@@ -148,25 +160,24 @@ async function loadEager(doc) {
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
   await loadBlocks(main);
-
-  // Add below snippet at the end of the lazy phase
-  if ((getMetadata('experiment')
-    || Object.keys(getAllMetadata('campaign')).length
-    || Object.keys(getAllMetadata('audience')).length)) {
-    // eslint-disable-next-line import/no-relative-packages
-    const { loadLazy: runLazy } = await import('../plugins/experimentation/src/index.js');
-    await runLazy(document, { audiences: AUDIENCES }, pluginContext);
-  }
-
+  autolinkModals(doc); // added for modal handling, see adobe docs
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
-
-  loadHeader(doc.querySelector('header'));
-  loadFooter(doc.querySelector('footer'));
+  if (!window.hlx.suppressFrame) { // added for sidekick library - see block party
+    loadHeader(doc.querySelector('header'));
+    loadFooter(doc.querySelector('footer'));
+  }
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
+  if ((getMetadata('experiment') ||
+    Object.keys(getAllMetadata('campaign')).length ||
+    Object.keys(getAllMetadata('audience')).length)) {
+    // eslint-disable-next-line import/no-relative-packages
+    const { loadLazy: runLazy } = await import('/plusplus/plugins/experimentation/src/index.js');
+    await runLazy(document, { audiences: AUDIENCES }, pluginContext);
+  }
 
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
@@ -184,6 +195,13 @@ function loadDelayed() {
 }
 
 async function loadPage() {
+  const urlParams = new URLSearchParams(window.location.search);
+  // added for sidekick library - see block party
+  if (urlParams.get('suppressFrame') || window.location.pathname.includes('tools/sidekick')) {
+    window.hlx.suppressFrame = true;
+    document.body.querySelector('header').remove();
+    document.body.querySelector('footer').remove();
+  }
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();
