@@ -5,18 +5,18 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
 import {
   a, div, li, p, h3, span, ul,
-} from '../../plusplus/block-party/dom-helpers.js';
-import ffetch from '../../plusplus/block-party/ffetch.js';
+} from '../../scripts/block-party/dom-helpers.js';
+import ffetch from '../../scripts/block-party/ffetch.js';
 
 export default async function decorate(block) {
   // Select the element by its class
   const element = document.querySelector('.dynamic-container');
 
   // Get the value of the 'data-maxreturn' attribute, or system value, or use the default value of 8
-  let maxReturn = element.getAttribute('data-maxreturn') ||
-    window.siteConfig?.['$meta:maxreturn$'] ||
-    window.siteConfig?.['$system:maxreturn$'] ||
-    '8';
+  let maxReturn = element.getAttribute('data-maxreturn')
+    || window.siteConfig?.['$meta:maxreturn$']
+    || window.siteConfig?.['$system:maxreturn$']
+    || '8';
 
   if (maxReturn === '-1') {
     maxReturn = 1000;
@@ -46,9 +46,9 @@ export default async function decorate(block) {
   }
 
   // Filter content to exclude paths containing '/template' and the current page path
-  const filteredContent = content.filter((card) => !card.path.includes('/template') && !card.path.includes('/test') &&
-    card.path !== window.location.pathname && // Dynamically exclude the current page path
-    targetNames.some((target) => card.path.includes(`/${target}/`)),
+  const filteredContent = content.filter((card) => !card.path.includes('/template') && !card.path.includes('/test')
+    && card.path !== window.location.pathname // Dynamically exclude the current page path
+    && targetNames.some((target) => card.path.includes(`/${target}/`)),
   );
 
   // Sort the filtered content by 'lastModified' in descending order
@@ -87,23 +87,21 @@ export default async function decorate(block) {
     const service = [];
     const resource = [];
 
-    sortedContent.forEach(item => {
+    sortedContent.forEach((item) => {
       service.push(item.service);
       resource.push(item.resource);
     });
 
     // Helper function to get unique values
-    const getUniqueValues = (data, key) => {
-      return [...new Set(data.map(item => item[key].split(', ')).flat())];
-    };
+    const getUniqueValues = (data, key) => [...new Set(data.map((item) => item[key].split(', ')).flat())];
 
     // Get unique services and resources
     const uniqueServices = getUniqueValues(sortedContent, 'service');
     const uniqueResources = getUniqueValues(sortedContent, 'resource');
 
     // Create a list item with a button for each service and resource
-    const serviceButtons = uniqueServices.map(service => `<li><button type="button" class="filter-btn service-btn" data-filter="${service}">${service}</button></li>`).join('');
-    const resourceButtons = uniqueResources.map(resource => `<li><button type="button" class="filter-btn resource-btn" data-filter="${resource}">${resource}</button></li>`).join('');
+    const serviceButtons = uniqueServices.map((service) => `<li><button type="button" class="filter-btn service-btn" data-filter="${service}">${service}</button></li>`).join('');
+    const resourceButtons = uniqueResources.map((resource) => `<li><button type="button" class="filter-btn resource-btn" data-filter="${resource}">${resource}</button></li>`).join('');
 
     // Create a block and class to append these lists
     const blocks = document.createElement('div');
@@ -113,8 +111,7 @@ export default async function decorate(block) {
     const list = (...content) => `<ul>${content.join('')}</ul>`;
 
     // Append as first child using innerHTML for demonstration (you might use DOM methods in actual deployment)
-    blocks.innerHTML =
-      `
+    blocks.innerHTML = `
     <div class="filter-service">${list(serviceButtons)}</div>
     <div class="filter-resource">${list(resourceButtons)}</div>
     `;
@@ -126,7 +123,7 @@ export default async function decorate(block) {
     const filterButtons = document.querySelectorAll('.filter-btn');
     const activeFilters = { service: null, resource: null };
 
-    filterButtons.forEach(button => {
+    filterButtons.forEach((button) => {
       button.addEventListener('click', () => {
         // Determine filter type
         const isService = button.classList.contains('service-btn');
@@ -138,7 +135,7 @@ export default async function decorate(block) {
           activeFilters[filterType] = null;
         } else {
           // Remove active class from same type buttons
-          document.querySelectorAll(`.${filterType}-btn`).forEach(btn => btn.classList.remove('active'));
+          document.querySelectorAll(`.${filterType}-btn`).forEach((btn) => btn.classList.remove('active'));
           button.classList.add('active');
           activeFilters[filterType] = button.getAttribute('data-filter');
         }
@@ -151,8 +148,8 @@ export default async function decorate(block) {
     function applyFilters() {
       const cards = cardsContainer.querySelectorAll('li');
       let hasVisibleCards = false;
-      cards.forEach(card => {
-        const tags = Array.from(card.querySelectorAll('.card-tag')).map(tag => tag.textContent);
+      cards.forEach((card) => {
+        const tags = Array.from(card.querySelectorAll('.card-tag')).map((tag) => tag.textContent);
         const matchesService = !activeFilters.service || tags.includes(activeFilters.service);
         const matchesResource = !activeFilters.resource || tags.includes(activeFilters.resource);
 

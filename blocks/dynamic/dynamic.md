@@ -30,7 +30,7 @@ Here's a detailed breakdown:
 
 - **Various elements from `'../../scripts/dom-helpers.js'`**: Functions like `a`, `div`, `li`, `p`, `strong`, `ul` are imported for creating HTML elements programmatically. This approach is typical in modern web development to dynamically generate content.
 - **`createOptimizedPicture` from `'../../scripts/aem.js'`**: A function designed to create optimized `<picture>` elements for responsive images, a common practice in web performance optimization.
-- **`ffetch` from `'../../scripts/ffetch.js'`**: a wrapper around the Fetch API, tailored for this project's specific needs for making network requests.
+- **`ffetch` from `'../../scripts/block-party/ffetch.js'`**: a wrapper around the Fetch API, tailored for this project's specific needs for making network requests.
 
 ### The `decorate` Function
 
