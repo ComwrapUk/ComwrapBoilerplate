@@ -3,5 +3,5 @@
      languages:
        pl:
          source: /pl/query-index.json
-         destination: /sitemap-en.xml
+         destination: /sitemap-pl.xml
          hreflang: en
