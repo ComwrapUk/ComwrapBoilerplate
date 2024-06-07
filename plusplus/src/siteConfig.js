@@ -1,6 +1,9 @@
 /* eslint-disable no-restricted-syntax */
 /* site configuration module */
 
+
+let releaseVersion = 'plusplus 1.0.2';
+
 import {
   tidyDOM,
   possibleMobileFix,
@@ -24,9 +27,7 @@ import { } from './externalImage.js';
 
 import {} from './clientExpressions.js';
 
-const releaseVersion = 'plusplus 1.0.1';
-
-await import('../../config/config.js');
+import {} from "/plusplus/src/clientExpressions.js";
 
 function noAction() {
 }
