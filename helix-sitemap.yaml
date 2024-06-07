@@ -2,6 +2,6 @@
    example:
      languages:
        pl:
-         source: /pl-pl/query-index.json
+         source: /pl/query-index.json
          destination: /sitemap-pl.xml
          hreflang: pl
