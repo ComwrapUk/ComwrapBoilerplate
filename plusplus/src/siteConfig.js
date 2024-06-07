@@ -1,33 +1,32 @@
 /* eslint-disable no-restricted-syntax */
 /* site configuration module */
 
-
-let releaseVersion = 'plusplus 1.0.1';
-
 import {
   tidyDOM,
   possibleMobileFix,
-  swiftChangesToDOM
+  swiftChangesToDOM,
 } from './reModelDom.js';
 
 import {
-  constructGlobal
+  constructGlobal,
 } from './variables.js';
 
 import {
-  initializeClientConfig
+  initializeClientConfig,
 } from './clientConfig.js';
 
 import {
   handleMetadataJsonLd,
-  createJSON
+  createJSON,
 } from './jsonHandler.js';
 
 import { } from './externalImage.js';
 
-await import('/config/config.js');
+import {} from './clientExpressions.js';
 
-import {} from "/plusplus/src/clientExpressions.js";
+const releaseVersion = 'plusplus 1.0.1';
+
+await import('../../config/config.js');
 
 function noAction() {
 }
@@ -56,13 +55,13 @@ export async function initializeSiteConfig() {
   // a locality is defined as a place to serve Helix Content for a regulated industry
   const getLocality = () => {
     const localities = [
-      { key: "localhost", value: "local" },
-      { key: "127.0.0.1", value: "local" },
-      { key: "-stage", value: "stage" },
-      { key: "fastly", value: "preprod" },
-      { key: "preprod.", value: "preprod" },
-      { key: "-prod", value: "prod" },
-      { key: "-dev", value: "dev" },
+      { key: 'localhost', value: 'local' },
+      { key: '127.0.0.1', value: 'local' },
+      { key: '-stage', value: 'stage' },
+      { key: 'fastly', value: 'preprod' },
+      { key: 'preprod.', value: 'preprod' },
+      { key: '-prod', value: 'prod' },
+      { key: '-dev', value: 'dev' },
     ];
     for (const env of localities) {
       if (window.location.hostname.includes(env.key)) {
@@ -94,7 +93,6 @@ export async function initializeSiteConfig() {
   }
 
   // all configuration completed, make any further callbacks from here
-
 
   await tidyDOM();
   await handleMetadataJsonLd();
