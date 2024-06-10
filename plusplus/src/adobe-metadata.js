@@ -17,6 +17,7 @@ function loadAnalyticsDebugPanel() {
 
   return content;
 }
+// eslint-disable-next-line import/prefer-default-export
 export async function initializeTracker() {
   // eslint-disable-next-line no-use-before-define
   await handleMetadataTracking();

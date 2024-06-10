@@ -1,9 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 /* site configuration module */
 
-
-let releaseVersion = 'plusplus 1.0.2';
-
 import {
   tidyDOM,
   possibleMobileFix,
@@ -27,10 +24,11 @@ import { } from './externalImage.js';
 
 import {} from './clientExpressions.js';
 
-import {} from "/plusplus/src/clientExpressions.js";
+const releaseVersion = 'plusplus 1.0.2';
 
 function noAction() {
 }
+// eslint-disable-next-line import/prefer-default-export
 export async function initializeSiteConfig() {
 // Determine the environment and locality based on the URL
   const getEnvironment = () => {

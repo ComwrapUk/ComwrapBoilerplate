@@ -139,9 +139,8 @@ export async function constructGlobal() {
       window.siteConfig['$meta:enablebiovariables$'] = window.siteConfig['$meta:wantbiovariables$'];
     }
 
-    if (window.siteConfig?.["$meta:wantdublincore$"]) {
-      window.siteConfig["$meta:enablebiovariables$"] =
-        window.siteConfig["$meta:wantdublincore$"];
+    if (window.siteConfig?.['$meta:wantdublincore$']) {
+      window.siteConfig['$meta:enablebiovariables$'] = window.siteConfig['$meta:wantdublincore$'];
     }
     const month = months[thismonth];
     const firstLetter = month.charAt(0).toUpperCase();

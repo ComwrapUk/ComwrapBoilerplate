@@ -1,5 +1,5 @@
 // Place any Client- Centered Code/  Configuration in here /
-import { loadScript } from '/scripts/aem.js';
+import { loadScript } from '../../scripts/aem.js';
 
 import { initializeTracker } from './adobe-metadata.js';
 
