@@ -1,3 +1,8 @@
+/* eslint-disable no-shadow */
+/* eslint-disable arrow-parens */
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-inner-declarations */
+/* eslint-disable max-len */
 /* eslint-disable function-paren-newline */
 /* eslint-disable import/extensions */
 /* eslint-disable no-alert */
@@ -60,21 +65,116 @@ export default async function decorate(block) {
   const maxReturnNumber = parseInt(maxReturn, 10);
 
   // Append sorted and filtered content to the block, obeying limits
-  block.append(
-    ul(
-      ...sortedContent.slice(0, maxReturnNumber).map((card) => li(
-        div({ class: 'card-image' },
-          a({ href: card.path }, // Link wrapping the image
-            createOptimizedPicture(card.image, card.headline, false, [{ width: '750' }]),
-          ),
+  const cardsContainer = ul(
+    ...sortedContent.slice(0, maxReturnNumber).map((card) => li(
+      div({ class: 'card-image' },
+        a({ href: card.path }, // Link wrapping the image
+          createOptimizedPicture(card.image, card.headline, false, [{ width: '750' }]),
         ),
-        div({ class: 'cards-card-body' },
-          span({ class: 'card-tag' }, card.service),
-          span({ class: 'card-tag alt' }, card.resource),
-          h3((card.headline)),
-          p(card.description),
-        ),
-      )),
-    ),
+      ),
+      div({ class: 'cards-card-body' },
+        span({ class: 'card-tag' }, card.service),
+        span({ class: 'card-tag alt' }, card.resource),
+        h3((card.headline)),
+        p(card.description),
+      ),
+    )),
   );
+
+  block.append(cardsContainer);
+
+  // Check if the current page is the resource page
+  const isResourcePage = window.location.pathname.includes('/resource');
+
+  if (isResourcePage) {
+    // Filtering
+    const service = [];
+    const resource = [];
+
+    sortedContent.forEach((item) => {
+      service.push(item.service);
+      resource.push(item.resource);
+    });
+
+    // Helper function to get unique values
+    const getUniqueValues = (data, key) => [...new Set(data.map((item) => item[key].split(', ')).flat())];
+
+    // Get unique services and resources
+    const uniqueServices = getUniqueValues(sortedContent, 'service');
+    const uniqueResources = getUniqueValues(sortedContent, 'resource');
+
+    // Create a list item with a button for each service and resource
+    // eslint-disable-next-line arrow-parens
+    const serviceButtons = uniqueServices.map(service => `<li><button type="button" class="filter-btn service-btn" data-filter="${service}">${service}</button></li>`).join('');
+    const resourceButtons = uniqueResources.map(resource => `<li><button type="button" class="filter-btn resource-btn" data-filter="${resource}">${resource}</button></li>`).join('');
+
+    // Create a block and class to append these lists
+    const blocks = document.createElement('div');
+    blocks.classList.add('filters');
+
+    // Function to create a <ul>
+    const list = (...content) => `<ul>${content.join('')}</ul>`;
+
+    // Append as first child using innerHTML for demonstration (you might use DOM methods in actual deployment)
+    blocks.innerHTML = `
+    <div class="filter-service">${list(serviceButtons)}</div>
+    <div class="filter-resource">${list(resourceButtons)}</div>
+    `;
+
+    // Assuming you have a root element to append this block
+    block.prepend(blocks);
+
+    // Add event listeners for filtering
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const activeFilters = { service: null, resource: null };
+
+    filterButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        // Determine filter type
+        const isService = button.classList.contains('service-btn');
+        const filterType = isService ? 'service' : 'resource';
+
+        // Toggle active class on the clicked button
+        if (button.classList.contains('active')) {
+          button.classList.remove('active');
+          activeFilters[filterType] = null;
+        } else {
+          // Remove active class from same type buttons
+          document.querySelectorAll(`.${filterType}-btn`).forEach((btn) => btn.classList.remove('active'));
+          button.classList.add('active');
+          activeFilters[filterType] = button.getAttribute('data-filter');
+        }
+
+        // Apply filters
+        applyFilters();
+      });
+    });
+
+    function applyFilters() {
+      const cards = cardsContainer.querySelectorAll('li');
+      let hasVisibleCards = false;
+      cards.forEach((card) => {
+        const tags = Array.from(card.querySelectorAll('.card-tag')).map((tag) => tag.textContent);
+        const matchesService = !activeFilters.service || tags.includes(activeFilters.service);
+        const matchesResource = !activeFilters.resource || tags.includes(activeFilters.resource);
+
+        if (matchesService && matchesResource) {
+          card.style.display = 'flex';
+          hasVisibleCards = true;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Show "no results found" message if no cards are visible
+      noResultsMessage.style.display = hasVisibleCards ? 'none' : 'block';
+    }
+  }
+
+  // Add a paragraph element for "no results found" message
+  const noResultsMessage = document.createElement('p');
+  noResultsMessage.classList.add('no-results');
+  noResultsMessage.innerHTML = '<strong>No results found.</strong><br>Try adjusting your filters or <a href="/contact-us">contact us</a> for more information.';
+  noResultsMessage.style.display = 'none'; // Initially hidden
+  block.insertBefore(noResultsMessage, cardsContainer);
 }
