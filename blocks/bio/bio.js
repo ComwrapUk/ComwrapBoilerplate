@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export default function decorate(block) {
   // Find the <img> element within the .bio.block
   const imgElement = document.querySelector('.bio.block img');

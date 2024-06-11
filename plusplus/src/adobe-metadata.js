@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* adobe specific meta data handling */
 /* NO CLIENT CODE IN HERE JUST SETUP FOR ADOBE */
 

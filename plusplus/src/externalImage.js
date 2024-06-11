@@ -1,7 +1,7 @@
 // External image handling, part of block-party; but modified to be a plugin for PlusPlus
 import {
-  createOptimizedPicture as libCreateOptimizedPicture
-} from '/scripts/aem.js';
+  createOptimizedPicture as libCreateOptimizedPicture,
+} from '../../scripts/aem.js';
 
 /**
  * Gets the extension of a URL.
