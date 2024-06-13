@@ -21,6 +21,7 @@ export function extractJsonLd(parsedJson) {
 }
 
 export async function createJSON() {
+  window.cmsplus.debug('createJSON');
   const dc = {};
   const co = {};
 
@@ -169,6 +170,7 @@ export async function createJSON() {
       document.head.appendChild(script);
     }
   }
+  window.cmsplus.debug('complete create json')
 }
 
 export async function handleMetadataJsonLd() {

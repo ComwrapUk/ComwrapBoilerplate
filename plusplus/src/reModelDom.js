@@ -3,21 +3,6 @@
 /* eslint-disable no-restricted-syntax */
 import { getConfigTruth } from './variables.js';
 
-export function addByLine() {
-  if (getConfigTruth('$system:addbyline$')) {
-    if (!window.siteConfig['$meta:suppressbyline$']) {
-      const firstH1 = document.querySelector('h1');
-      if (firstH1) {
-        const appendString = `Published: ${window.siteConfig['$system:dateinenglish$']}; By ${window.siteConfig['$meta:author$']},  ${window.siteConfig['$page:readspeed$']} </strong>minute(s) reading.`;
-        // Append the constructed string to the h1 element's current content
-        const newElement = document.createElement('div');
-        newElement.className = 'byLine';
-        newElement.innerHTML = appendString;
-        firstH1.insertAdjacentElement('afterend', newElement);
-      }
-    }
-  }
-}
 export function removeMeta() {
   const keepMetadataNames = [
     'description',
@@ -92,7 +77,6 @@ export async function possibleMobileFix(container) {
 }
 // perform very fast changes. before the page is shown
 export function swiftChangesToDOM() {
-  addByLine();
   DynamicSVGWidthHeight();
 }
 
@@ -115,6 +99,7 @@ function inject() {
 
 // tidyDOM is the slow fixes to the Dom that do not change styes or view
 export async function tidyDOM() {
+  window.cmsplus.debug('Tidy DOM');
   removeCommentBlocks();
   removeMeta();
   inject();
@@ -161,4 +146,5 @@ export async function tidyDOM() {
       link.classList.add('current');
     }
   });
+  window.cmsplus.debug('Tidy DOM complete');
 }
