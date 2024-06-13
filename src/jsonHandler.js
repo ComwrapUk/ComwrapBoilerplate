@@ -19,6 +19,7 @@ export function extractJsonLd(parsedJson) {
 }
 
 export async function createJSON() {
+  window.cmsplus.debug('createJSON');
   const dc = {};
   const co = {};
 
@@ -54,11 +55,11 @@ export async function createJSON() {
 
   window.siteConfig["$meta:author$"] ??= window.siteConfig["$company:name$"];
 
-  if (getConfigTruth('$meta:enablebiovariables$')) {
-    let bioConfig = window.siteConfig?.["$meta:author$"];
-    if (bioConfig) {
-      bioConfig = bioConfig.replaceAll(" ", "-").toLowerCase();
-      await readVariables(`${window.location.origin}/bio/${bioConfig}.json`);
+  if (getConfigTruth('$meta:enableprofilevariables$')) {
+    let profileConfig = window.siteConfig?.["$meta:author$"];
+    if (profileConfig) {
+      profileConfig = profileConfig.replaceAll(" ", "-").toLowerCase();
+      await readVariables(`${window.location.origin}/profiles/${profileConfig}.json`);
     }
   }
   if (window.siteConfig?.["$meta:command$"]) {
@@ -177,10 +178,11 @@ export async function createJSON() {
       document.head.appendChild(script);
     }
   }
+  window.cmsplus.debug('complete create json')
 }
 
 export async function handleMetadataJsonLd() {
-
+window.cmsplus.debug('handleMetadataJsonLd')
   // assume we have an url, if not we have a role -  construct url on the fly
   let content = window.siteConfig['$meta:json-ld$'];
     try {
@@ -213,4 +215,5 @@ export async function handleMetadataJsonLd() {
     // eslint-disable-next-line no-console
       console.log('Error processing JSON-LD metadata:', error);
     }
+  window.cmsplus.debug('complete handleMetadataJsonLd')
   }

@@ -80,10 +80,11 @@ export function convertToISODate(input) {
 }
 
 export async function constructGlobal() {
+  window.cmsplus.debug('constructGlobal');
   window.siteConfig = {};
   await readVariables(new URL('/config/defaults.json', window.location.origin));
   await readVariables(new URL('/config/variables.json', window.location.origin));
-  if (['final', 'preview', 'live'].includes(window.cmsplus.environment)) {
+  if (['preview', 'live'].includes(window.cmsplus.environment)) {
     await readVariables(new URL(`/config/variables-${window.cmsplus.environment}.json`, window.location.origin));
   }
   if (['local', 'dev', 'preprod', 'prod', 'stage'].includes(window.cmsplus.locality)) {
@@ -110,6 +111,7 @@ export async function constructGlobal() {
     window.siteConfig['$co:defaulttags$'] = 'none';
 
     window.siteConfig['$system:environment$'] = window.cmsplus.environment;
+    window.siteConfig['$system:locality$'] = window.cmsplus.locality;
 
     window.siteConfig['$page:location$'] = winloc;
     window.siteConfig['$page:url$'] = href;
@@ -117,7 +119,6 @@ export async function constructGlobal() {
     // eslint-disable-next-line prefer-destructuring
     window.siteConfig['$page:path$'] = (`${winloc}?`).split('?')[0];
     window.siteConfig['$page:wordcount$'] = wordCount;
-    window.siteConfig['$page:linkcount$'] = document.querySelectorAll('a').length;
     window.siteConfig['$page:readspeed$'] = (Math.ceil(wordCount / 140) + 1).toString();
     window.siteConfig['$page:title$'] = document.title;
     window.siteConfig['$page:canonical$'] = href;
@@ -135,13 +136,17 @@ export async function constructGlobal() {
     window.siteConfig['$system:millisecond$'] = new Date().getMilliseconds();
     window.siteConfig['$system:version$'] = window.cmsplus.release;
 
-    if (window.siteConfig?.['$meta:wantbiovariables$']) {
-      window.siteConfig['$meta:enablebiovariables$'] = window.siteConfig['$meta:wantbiovariables$'];
-    }
 
     if (window.siteConfig?.["$meta:wantdublincore$"]) {
-      window.siteConfig["$meta:enablebiovariables$"] =
-        window.siteConfig["$meta:wantdublincore$"];
+      window.siteConfig["$meta:enabledublincore$"] = window.siteConfig["$meta:wantdublincore$"];
+    }
+    if (window.siteConfig?.['$system:allowtracking$']) {
+      window.siteConfig['$system:enabletracking$'] = window.siteConfig['$system:allowtracking$'];
+
+    }
+    if (window.siteConfig?.['$system:allowtracking$']) {
+      window.siteConfig['$system:enabletracking$'] = window.siteConfig['$system:allowtracking$'];
+
     }
     const month = months[thismonth];
     const firstLetter = month.charAt(0).toUpperCase();
@@ -154,6 +159,7 @@ export async function constructGlobal() {
   } catch (error) {
     console.log('Problem constructing SiteConfig', error);
   }
+  window.cmsplus.debug('constructGlobal done');
 }
 
 export function getConfigTruth(variable) {
