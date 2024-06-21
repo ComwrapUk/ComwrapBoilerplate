@@ -1,3 +1,4 @@
+/* stylelint-disable declaration-block-no-redundant-longhand-properties */
 
 @media (width <= 899px) {
     .info-graphic {
@@ -57,7 +58,6 @@
     .info-graphic-img {
         overflow-x: auto;
         overflow-y: hidden;
-        overflow: auto hidden;
         position: relative;
     }
 
