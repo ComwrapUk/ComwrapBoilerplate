@@ -14,7 +14,8 @@ import {
   getMetadata,
   loadScript,
   toCamelCase,
-  loadCSS
+  loadCSS,
+  fetchPlaceholders,
 } from '/scripts/aem.js';
 
 import { } from '/plusplus/src/siteConfig.js';
@@ -210,5 +211,10 @@ async function loadPage() {
   await loadLazy(document);
   loadDelayed();
 }
+
+// fetch placeholders from the 'en' folder
+const placeholders = await fetchPlaceholders('en');
+// retrieve the value for key 'foo'
+const { foo } = placeholders;
 
 loadPage();
