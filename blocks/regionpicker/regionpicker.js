@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 function setupRegionPicker(regionSelector) {
   const regionPickerElem = document.querySelector(regionSelector);
   if (!regionPickerElem) {
