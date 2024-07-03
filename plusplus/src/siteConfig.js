@@ -89,7 +89,7 @@ export async function initializeSiteConfig() {
 
   window.cmsplus.callbackAfter3SecondsChain.push(noAction); // set up nop.
   window.cmsplus.callbackPageLoadChain.push(noAction); // set up nop.
-  possibleMobileFix('hero');
+  possibleMobileFix('teaser');
   await constructGlobal();
   swiftChangesToDOM();
   await createJSON();
