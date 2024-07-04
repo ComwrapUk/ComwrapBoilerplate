@@ -1,5 +1,7 @@
 /**
  * Credits: https://github.com/adobe/franklin-sidekick-library/blob/main/src/plugins/blocks/utils.js
+ * NOTE: Linting errors are disabled down below, to allow for future pulls of newer versions of this code without
+ * the need to refactor it every time.
  */
 
 /*
@@ -14,7 +16,7 @@
  * governing permissions and limitations under the License.
  */
 
-/* eslint-disable consistent-return, no-param-reassign */
+/* eslint-disable consistent-return, no-param-reassign, no-restricted-syntax, no-await-in-loop, no-use-before-define, max-len */
 
 import {
   createTag, readBlockConfig, toCamelCase, isPath,
