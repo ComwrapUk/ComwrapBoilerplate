@@ -39,6 +39,8 @@
 
   /* nav height */
   --nav-height: 64px;
+  --breadcrumbs-height: 35px;
+  --breadcrumbs-font-size: 14px;
 
   /* comwrap styles  */
     /* Spacing */
