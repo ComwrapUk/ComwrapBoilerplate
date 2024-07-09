@@ -46,7 +46,10 @@
     <script>
       const library = document.createElement('sidekick-library');
       library.config = {
-        base: '/tools/sidekick/library.json',
+        base: '/block-library/library.json',
+        autoblocks: "/tools/sidekick/library/sections/autoblocks/autoblocks.js",
+        templates: "/tools/sidekick/library/sections/templates/templates.js",
+        documentation: "/tools/sidekick/library/sections/documentation/documentation.js",
       };
 
       document.body.prepend(library);
