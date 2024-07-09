@@ -1,3 +1,6 @@
+/* eslint-disable import/prefer-default-export */
+/* eslint-disable no-console */
+/* eslint-disable no-restricted-syntax */
 /**
  * Fetches the dictionary from /api/dictionary.json and scopes the result by current language.
  * The dictionary must be created as an excel sheet located at /api/dictionary.xlsx
@@ -12,18 +15,16 @@ let dictionaryPromise = null;
 export async function getDictionary() {
   const lang = document.documentElement.lang.toLowerCase() || 'en-us';
   if (dictionaryPromise === null) {
-    dictionaryPromise = fetch(`/api/dictionary.json`)
+    dictionaryPromise = fetch('/api/dictionary.json')
       .then((res) => res.json())
       .catch((e) => console.error('Failed to fetch dictionary', e));
   }
 
   /** @type Array<{ key:string} & Record<string, string>> */
   const dictionary = (await dictionaryPromise).data;
-  const dictionaryLangValues = dictionary.filter((item) =>
-    Object.keys(item).includes(lang)
-  );
+  const dictionaryLangValues = dictionary.filter((item) => Object.keys(item).includes(lang));
   const dictionaryLang = dictionaryLangValues.map((item) => {
-    const key = item.key;
+    const { key } = item;
     const value = item[lang];
     return [key, value];
   });
@@ -47,7 +48,7 @@ export async function getDictionary() {
       obj[last] = value;
       return acc;
     },
-    {}
+    {},
   );
   return dictionaryLangNested;
 }
