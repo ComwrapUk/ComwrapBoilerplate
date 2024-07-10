@@ -79,16 +79,25 @@ export function convertToISODate(input) {
   return input;
 }
 
-export async function constructGlobal() {
-  const defaultBaseUrl = 'https://main--comwrapboilerplate--comwrapuk.hlx.page/'; // Replace with your actual server URL
-  const baseUrl = window.location.origin || defaultBaseUrl;
+function getBaseUrl() {
+  if (typeof window !== 'undefined' && window.location && window.location.origin) {
+    return window.location.origin;
+  } else {
+    // Default URL if running in a non-standard environment
+    return 'https://main--comwrapboilerplate--comwrapuk.hlx.page/'; // Adjust this to your needs
+  }
+}
 
-  window.cmsplus.debug('constructGlobal');
-  window.siteConfig = {};
-  await readVariables(new URL('/config/variables.json', baseUrl));
-  await readVariables(new URL('/config/defaults.json', baseUrl));
-  // Include the rest of your environment and locality specific configurations here
-  window.cmsplus.debug('constructGlobal done');
+export async function constructGlobal() {
+  export async function constructGlobal() {
+    const baseUrl = getBaseUrl();
+  
+    window.cmsplus.debug('constructGlobal');
+    window.siteConfig = {};
+    await readVariables(new URL('/config/variables.json', baseUrl));
+    await readVariables(new URL('/config/defaults.json', baseUrl));
+    // Continue with other configurations
+    window.cmsplus.debug('constructGlobal done');
 
 
   if (['preview', 'live'].includes(window.cmsplus.environment)) {
