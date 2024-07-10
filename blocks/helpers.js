@@ -52,3 +52,33 @@ export async function getDictionary() {
   );
   return dictionaryLangNested;
 }
+
+let variablesPromise = null;
+/**
+ * Get site config variables.
+ * @returns {Promise<any> | null}
+ */
+export async function getSiteConfigVariables() {
+  if (window.siteConfig && window.siteConfig.variables) {
+    return window.siteConfig.variables;
+  }
+  if (!window.siteConfig) {
+    window.siteConfig = {};
+  }
+
+  if (variablesPromise === null) {
+    variablesPromise = fetch('/config/variables.json')
+      .then((res) => res.json())
+      .catch((e) => console.error('Failed to fetch variables', e));
+  }
+
+  /**
+   * @type {{ Item: string, Value: string }[]}
+   */
+  const variables = (await variablesPromise).data;
+  if (variables && Array.isArray(variables)) {
+    window.siteConfig.variables = variables.reduce((acc, { Item, Value }) => ({ ...acc, [Item]: Value }), {});
+  }
+
+  return window.siteConfig.variables;
+}

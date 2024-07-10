@@ -1,11 +1,17 @@
-class WeatherApi {
-  #baseUrl = 'api.weatherapi.com/v1';
+import { getSiteConfigVariables } from '../helpers.js';
 
-  #apiKey = 'e95746a9467f4783b92140429242006';
+class WeatherApi {
+  #apiKey = '';
+
+  #baseUrl = 'api.weatherapi.com/v1';
 
   #endpoints = {
     forecast: '/forecast.json',
   };
+
+  constructor (apiKey) {
+    this.#apiKey = apiKey;
+  }
 
   #buildEndpoint(endpoint) {
     return `https://${this.#baseUrl}${endpoint}`;
@@ -29,7 +35,16 @@ class WeatherApi {
   }
 }
 
-const weatherApi = new WeatherApi();
+/**
+ * Get weather API instance
+ * @returns {Promise<WeatherApi>}
+ */
+async function getWeatherApi() {
+  const variables = await getSiteConfigVariables();
+  const apiKey = variables['$system:weatherapi$'];
+  const weatherApi = new WeatherApi(apiKey);
+  return weatherApi;
+}
 
 /**
  * Formats a date
@@ -59,6 +74,7 @@ export default async function decorate(block) {
   const { title, city, lang } = config;
   const numDays = 3;
 
+  const weatherApi = await getWeatherApi();
   const weatherData = await weatherApi.getForecast(city, numDays, lang);
 
   block.textContent = '';
