@@ -1,5 +1,6 @@
-
-
 export default function decorate(block) {
-    const downlaodLink = block.children
+  const downlaodLink = block.querySelector('.button-container a');
+  if (downlaodLink) {
+    downlaodLink.setAttribiute('download', '');
+  }
 }
