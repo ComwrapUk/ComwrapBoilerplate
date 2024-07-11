@@ -9,9 +9,6 @@
       },{
         "Item":"$system:allowtracking$",
         "Value": "n - but make it y to start tracking"
-      },{
-        "Item": "$system:trackingscript$",
-        "Value": "https://assets.adobedtm.com/dxxxxxxxxxx/xxxxxxxx/launch-xxxxx-development.min.js"
       }, {
         "Item": "$system:abtastyscript$",
         "Value": "https://try.abtasty.com/xxxxxxxxxxxxxx.js"
