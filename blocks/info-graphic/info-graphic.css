@@ -1,10 +1,13 @@
-/* stylelint-disable declaration-block-no-redundant-longhand-properties */
 
 @media (width <= 899px) {
     .info-graphic {
         min-width: 100%;
         position: relative;
         padding-bottom: 2rem;
+    }
+
+    .span-arrow {
+        position: relative;
     }
 
     @keyframes shift {
@@ -22,7 +25,6 @@
     }
 
     .span-arrow {
-        position: relative;
         margin-inline: auto;
         width: 50%;
         height: 1px;

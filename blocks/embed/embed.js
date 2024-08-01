@@ -55,6 +55,15 @@ const embedTwitter = (url) => {
   return embedHTML;
 };
 
+const embedGoogleMaps = (url) => {
+  const embedHTML = `<div style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.25%;">
+      <iframe src="${url.href}" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" allowfullscreen="" 
+      scrolling="no" title="Content from Google Maps" loading="lazy">
+      </iframe>
+  </div>`;
+  return embedHTML;
+};
+
 const loadEmbed = (block, link, autoplay) => {
   if (block.classList.contains('embed-is-loaded')) {
     return;
@@ -72,6 +81,10 @@ const loadEmbed = (block, link, autoplay) => {
     {
       match: ['twitter'],
       embed: embedTwitter,
+    },
+    {
+      match: ['maps.google'],
+      embed: embedGoogleMaps,
     },
   ];
 
@@ -95,7 +108,7 @@ export default function decorate(block) {
   if (placeholder) {
     const wrapper = document.createElement('div');
     wrapper.className = 'embed-placeholder';
-    wrapper.innerHTML = '<div class="embed-placeholder-play"><button type="button" title="Play"></button></div>';
+    wrapper.innerHTML = '<div class="embed-placeholder-play"><button title="Play"></button></div>';
     wrapper.prepend(placeholder);
     wrapper.addEventListener('click', () => {
       loadEmbed(block, link, true);
@@ -109,5 +122,52 @@ export default function decorate(block) {
       }
     });
     observer.observe(block);
+  }
+  const embedMapSection = block.closest('.section.embed-map');
+
+  if (embedMapSection) {
+    const londonWrapper = embedMapSection.querySelector('.london-wrapper');
+    const manchesterWrapper = embedMapSection.querySelector('.manchester-wrapper');
+
+    const buttonContainersParent = embedMapSection.querySelector('.default-content-wrapper');
+    if (buttonContainersParent) {
+      buttonContainersParent.classList.add('buttons');
+    }
+
+    const londonButton = embedMapSection.querySelector('a[title="London"]');
+    const manchesterButton = embedMapSection.querySelector('a[title="Manchester"]');
+
+    function showMap(wrapper, activeButton) {
+      // Remove 'show' class from both wrappers
+      londonWrapper.classList.remove('show');
+      manchesterWrapper.classList.remove('show');
+
+      // Remove 'active' class from both buttons
+      londonButton.classList.remove('active');
+      manchesterButton.classList.remove('active');
+
+      // Add 'show' class to the selected wrapper
+      wrapper.classList.add('show');
+
+      // Add 'active' class to the clicked button
+      activeButton.classList.add('active');
+    }
+
+    if (londonButton) {
+      londonButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        showMap(londonWrapper, londonButton);
+      });
+    }
+
+    if (manchesterButton) {
+      manchesterButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        showMap(manchesterWrapper, manchesterButton);
+      });
+    }
+
+    // Initially show the London map and activate London button
+    showMap(londonWrapper, londonButton);
   }
 }

@@ -1,3 +1,4 @@
+/* Quote core block */
 .quote blockquote {
   margin: 0 auto;
   padding: 0 32px;
@@ -18,11 +19,11 @@
 }
 
 .quote blockquote .quote-quotation > :first-child::before {
-  content: "“";
+  content: '“';
 }
 
 .quote blockquote .quote-quotation > :last-child::after {
-  content: "”";
+  content: '”';
 }
 
 .quote blockquote .quote-attribution {
@@ -30,5 +31,5 @@
 }
 
 .quote blockquote .quote-attribution > :first-child::before {
-  content: "—";
+  content: '—';
 }

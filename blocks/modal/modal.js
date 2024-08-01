@@ -1,7 +1,8 @@
 import { loadFragment } from '../fragment/fragment.js';
 import {
-  buildBlock, decorateBlock, decorateIcons, loadBlock, loadCSS,
+  buildBlock, decorateBlock, decorateIcons, loadBlock, loadCSS
 } from '../../scripts/aem.js';
+import { handleExternalLinks } from '../../scripts/plugins/reModelDom.js';
 
 // This is not a traditional block, so there is no decorate function. Instead, links to
 // a */modals/* path  are automatically transformed into a modal. Other blocks can also use
@@ -23,12 +24,15 @@ export async function createModal(contentNodes) {
   closeButton.addEventListener('click', () => dialog.close());
   dialog.append(closeButton);
 
-  // close dialog on clicks outside the dialog. https://stackoverflow.com/a/70593278/79461
+  // Add flip animation classes
+  dialog.classList.add('flipin');
+
   dialog.addEventListener('click', (event) => {
     const dialogDimensions = dialog.getBoundingClientRect();
-    if (event.clientX < dialogDimensions.left || event.clientX > dialogDimensions.right
-      || event.clientY < dialogDimensions.top || event.clientY > dialogDimensions.bottom) {
-      dialog.close();
+    if (event.clientX < dialogDimensions.left || event.clientX > dialogDimensions.right ||
+        event.clientY < dialogDimensions.top || event.clientY > dialogDimensions.bottom) {
+      dialog.classList.remove('flipin');
+      setTimeout(() => dialog.close(), 500);
     }
   });
 
@@ -37,22 +41,19 @@ export async function createModal(contentNodes) {
   decorateBlock(block);
   await loadBlock(block);
   decorateIcons(closeButton);
-
   dialog.addEventListener('close', () => {
     document.body.classList.remove('modal-open');
     block.remove();
   });
-
   block.append(dialog);
+
   return {
     block,
     showModal: () => {
       dialog.showModal();
-      // Google Chrome restores the scroll position when the dialog is reopened,
-      // so we need to reset it.
       setTimeout(() => { dialogContent.scrollTop = 0; }, 0);
-
       document.body.classList.add('modal-open');
+      handleExternalLinks();
     },
   };
 }
@@ -64,5 +65,6 @@ export async function openModal(fragmentUrl) {
 
   const fragment = await loadFragment(path);
   const { showModal } = await createModal(fragment.childNodes);
+
   showModal();
 }
