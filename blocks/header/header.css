@@ -333,6 +333,15 @@ header nav .nav-tools div {
   justify-content: space-around;
 }
 
+header nav .nav-tools a.button {
+  padding: 0.5rem;
+}
+
+header nav .nav-tools a.button:hover {
+  background: transparent;
+}
+
+
 .nav-tools .button-container:last-child .button {
   background-color: transparent;
   padding: 0;
@@ -554,9 +563,5 @@ header nav .nav-tools div {
   .nav-tools .button-container:first-child .button:hover::before,
   .nav-tools .button-container:first-child .button:focus::before {
     background-color: var(--color-black);
-  }
-
-  .nav-tools .button-container .button {
-    background-color: var(--color-heart-red-dark);
   }
 }
