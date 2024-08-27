@@ -1,11 +1,11 @@
 {
-    "project": "MyTrial",
+    "project": "Comwrap Boilerplate",
     "plugins": [
       {
         "id": "library",
         "title": "Library",
         "environments": ["edit"],
-        "url": "/tools/sidekick/library.html",
+        "url": "/block-library/library.html",
         "includePaths": ["**.docx**"]
       },
       {
