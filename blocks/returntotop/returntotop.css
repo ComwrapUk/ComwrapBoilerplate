@@ -1,6 +1,7 @@
 .returntotop {
     position: fixed;
     bottom: 20px;
+    left: 20px;
     padding: 10px;
     background-color: #007BFF;
     color: white;
@@ -11,29 +12,15 @@
     font-size: 15px;
     line-height: 1.2;
     display: none;
-    height: 60px;
-    width: 60px;
+    height: 40px;
+    width: 40px;
     transition: all 0.3s ease-in-out;
 
     &::before {
-        font-size: 50px;
-        line-height: 1.1;
-        content: '^';
+        content: 'back to top';
     } 
 }
 
 .returntotop:hover {
     background-color: #0056b3;
-}
-
-main .section.returntotop-container {
-    position: fixed;
-    z-index: 100;
-    left: 1rem;
-    bottom: 1rem;
-    background: transparent !important;
-    box-shadow: none !important;
-    width: 60px;
-    height: 60px;
-    clip-path: none;
 }
