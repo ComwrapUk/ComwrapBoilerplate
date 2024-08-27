@@ -1,8 +1,6 @@
 .returntotop {
     position: fixed;
-    z-index: 99;
     bottom: 20px;
-    left: 20px;
     padding: 10px;
     background-color: #007BFF;
     color: white;
@@ -26,4 +24,16 @@
 
 .returntotop:hover {
     background-color: #0056b3;
+}
+
+main .section.returntotop-container {
+    position: fixed;
+    z-index: 100;
+    right: 3rem;
+    bottom: 3rem;
+    background: transparent !important;
+    box-shadow: none !important;
+    width: 60px;
+    height: 60px;
+    clip-path: none;
 }
