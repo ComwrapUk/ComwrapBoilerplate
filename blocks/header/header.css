@@ -336,26 +336,13 @@ header nav .nav-tools div {
 .nav-tools .button-container:last-child .button {
   background-color: transparent;
   padding: 0;
-  font-size: 0;
   display: flex;
   align-items: center;
   height: 30px;
 }
 
-.nav-tools .button-container:last-child .button::before {
-  content: '';
-  font-size: 1.5rem;
-  font-family: var(--font-family-regular);
-  line-height: 1;
-  width: 35px;
-  height: 40px;
-  background-color: white;
-  -webkit-mask-image: url("/icons/speedtest.svg");
-          mask-image: url("/icons/speedtest.svg");
-  -webkit-mask-repeat: no-repeat;
-          mask-repeat: no-repeat;
-  -webkit-mask-position: center center;
-          mask-position: center center;
+.nav-tools .button-container a:hover {
+  color: var(--color-heart-red);
 }
 
 .nav-tools .button-container:last-child .button:focus-visible::before,
@@ -371,23 +358,6 @@ header nav .nav-tools div {
   align-items: center;
   justify-content: center;
   padding: 0;
-  font-size: 0;
-}
-
-.nav-tools .button-container:first-child .button::before {
-  content: '';
-  display: block;
-  width: 35px;
-  height: 40px;
-  background-color: var(--color-white);
-  -webkit-mask-image: url('/icons/cw-chat-wht.svg');
-          mask-image: url('/icons/cw-chat-wht.svg');
-  -webkit-mask-size: 30px;
-          mask-size: 30px;
-  -webkit-mask-position: center center;
-          mask-position: center center;
-  -webkit-mask-repeat: no-repeat;
-          mask-repeat: no-repeat;
 }
 
 .nav-tools .button-container:first-child .button:focus-visible::before,
@@ -566,40 +536,13 @@ header nav .nav-tools div {
     align-items: center;
     font-size: var(--body-font-size-s);
     font-family: var(--font-family-semibold);
-    background-color: var(--color-heart-red-dark);
-    background-position: 10px center;
-    background-size: 25px;
-    padding: var(--spacing-xs) var(--spacing-xxs);
+    padding: var(--spacing-xxs);
     text-indent: 0;
-  }
-
-  .nav-tools .button-container:last-child .button:hover,
-  .nav-tools .button-container:last-child .button:focus,
-  .nav-tools .button-container:first-child .button:hover,
-  .nav-tools .button-container:first-child .button:focus {
-    background-color: var(--color-white);
-    border: 2px solid var(--color-white);
   }
 
   .nav-tools .button-container:last-child .button:hover::before,
   .nav-tools .button-container:last-child .button:focus::before {
       color: var(--color-black);
-  }
-
-  .nav-tools .button-container:first-child .button::before {
-    height: 35px;
-    -webkit-mask-size: 25px;
-            mask-size: 25px;
-    background-color: var(--color-white);
-  }
-
-  .nav-tools .button-container:last-child .button::before {
-    font-size: var(--body-font-size-s);
-    -webkit-mask-size: 30px 30px;
-            mask-size: 30px 30px;
-    height: 25px;
-    -webkit-mask-position: center left;
-            mask-position: center left;
   }
 
   .nav-tools .button-container:last-child .button:hover::before,
