@@ -29,8 +29,8 @@
 main .section.returntotop-container {
     position: fixed;
     z-index: 100;
-    left: 3rem;
-    bottom: 3rem;
+    left: 1rem;
+    bottom: 1rem;
     background: transparent !important;
     box-shadow: none !important;
     width: 60px;
