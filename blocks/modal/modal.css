@@ -7,7 +7,7 @@ body.modal-open {
     padding: 0;
     overscroll-behavior: none;
     background-image: url('');
-    background-color: transparent;
+    background-color: var(--color-nocturnal-blue);
     border: 0;
   }
   
@@ -76,7 +76,14 @@ body.modal-open {
   }
 
   .modal dialog .section {
-    padding: 0;
+    padding: 1rem;
+    box-shadow: none;
+    text-align: center;
+    color: white;
+  }
+
+  .modal dialog .section h2 {
+    color: white;
   }
 
   .modal-content .modal-hero {
