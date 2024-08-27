@@ -29,7 +29,7 @@
 main .section.returntotop-container {
     position: fixed;
     z-index: 100;
-    right: 3rem;
+    left: 3rem;
     bottom: 3rem;
     background: transparent !important;
     box-shadow: none !important;
